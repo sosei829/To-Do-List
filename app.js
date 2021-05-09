@@ -5,6 +5,10 @@ const app = express()
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
 
+const exphbs = require('express-handlebars');
+app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.set('view engine', 'hbs')
+
 //把連線狀態暫存下來
 // 取得資料庫連線狀態
 const db = mongoose.connection
@@ -19,7 +23,7 @@ db.once('open', () => {
 
 // 設定首頁路由
 app.get('/', (req, res) => {
-  res.send('hello world')
+  res.render('index')
 })
 
 // 設定 port 3000
