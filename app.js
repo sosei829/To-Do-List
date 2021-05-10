@@ -47,6 +47,14 @@ app.post('/todos', (req, res) => {
     .catch(error => console.log(error))
 })
 
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id) //從資料庫找出資料
+    .lean() //把資料轉換成單純的 JS 物件
+    .then((todo) => res.render('detail', { todo })) //把資料送給前端樣板
+    .catch(error => console.log(error)) //意外情形處理
+})
+
 // 設定 port 3000
 app.listen(3000, () => {
   console.log('App is running on http://localhost:3000')
