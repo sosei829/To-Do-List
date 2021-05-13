@@ -8,10 +8,13 @@ mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUn
 const Todo = require('./models/todo') 
 // 引用 body-parser
 const bodyParser=require('body-parser')
+// 載入 over-ride
+const methodoverride = require('method-override')
 
 // 用 app.use 規定每一筆請求都需要透過 body-parser 進行前置處理
 app.use(bodyParser.urlencoded({ extended: true }))
-
+// 用 app.use
+app.use(methodoverride('_method'))
 const exphbs = require('express-handlebars');
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
 app.set('view engine', 'hbs')
@@ -64,7 +67,7 @@ app.get('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/todos/:id/edit', (req, res) => {
+app.put('/todos/:id', (req, res) => {
   const id = req.params.id
   const { name, isDone } = req.body
   return Todo.findById(id)
@@ -77,7 +80,7 @@ app.post('/todos/:id/edit', (req, res) => {
     .catch(error => console.log(error))
 })
 
-app.post('/todos/:id/delete', (req, res) => {
+app.delete('/todos/:id', (req, res) => {
   const id = req.params.id
   return Todo.findById(id)
     .then(todo => todo.remove())
