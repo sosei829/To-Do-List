@@ -1,6 +1,8 @@
 // 載入 mongoose並連線到 mongoDB
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/todo-list', { useNewUrlParser: true, useUnifiedTopology: true })
+const MONGODB_URI = process.env.MONGODB_URI ||'mongodb://localhost/todo-list'
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // 取得資料庫連線狀態
 const db = mongoose.connection
